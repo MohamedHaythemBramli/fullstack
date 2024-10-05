@@ -1,0 +1,37 @@
+volumes:
+  mysql-data:
+networks:
+  spring-boot-mysql-network:
+    name: spring-boot-mysql-network
+services:
+  mysqldb:
+    image: mysql:latest
+    ports:
+      - "3308:3306"
+    environment:
+      - MYSQL_DATABASE=customersdb
+      - MYSQL_USER=myuser
+      - MYSQL_PASSWORD=mypassword
+      - MYSQL_ROOT_PASSWORD=myroot
+    networks:
+      - spring-boot-mysql-network
+    volumes:
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      retries: 5
+      interval: 3s
+      timeout: 30s
+  myapp:
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      mysqldb:
+        condition: service_healthy
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysqldb:3306/customersdb
+      - SPRING_DATASOURCE_USERNAME=myuser
+      - SPRING_DATASOURCE_PASSWORD=mypassword
+    networks:
+      - spring-boot-mysql-network
