@@ -9,6 +9,9 @@ import com.linkedin.backend.repositories.CustomerRepository;
 import com.linkedin.backend.service.CustomerService;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -29,6 +32,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    @Cacheable(value = "customers", key = "#pageable.pageNumber + '-' + #pageable.pageSize + '-' + #pageable.sort")
     public Page<CustomerDto> selectAllCustomers(Pageable pageable) {
         log.info("Fetching customers from database with pagination and sorting");
         return customerRepository.findAll(pageable)
@@ -36,6 +40,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    @Cacheable(value = "customer", key = "#customerId")
     public Optional<CustomerDto> selectCustomerById(Integer customerId) {
         log.info("Fetching customer by ID: {}", customerId);
         return Optional.ofNullable(customerRepository.findById(customerId)
@@ -44,6 +49,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    @CacheEvict(value = "customers", allEntries = true)
     public void insertCustomer(CustomerDto customerDto) {
         log.info("Inserting a new customer with email: {}", customerDto.getEmail());
         if (existsCustomerWithEmail(customerDto.getEmail())) {
@@ -54,18 +60,21 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    @Cacheable(value = "customerEmail", key = "#email")
     public boolean existsCustomerWithEmail(String email) {
         log.info("Checking if a customer exists with email: {}", email);
         return customerRepository.existsByEmail(email);
     }
 
     @Override
+    @Cacheable(value = "customerEmail", key = "#email")
     public boolean existsCustomerById(Integer customerId) {
         log.info("Checking if a customer exists with ID: {}", customerId);
         return customerRepository.existsById(customerId);
     }
 
     @Override
+    @CacheEvict(value = "customer", key = "#customerId")
     public void deleteCustomerById(Integer customerId) {
         log.info("Deleting customer with ID: {}", customerId);
         if (!customerRepository.existsById(customerId)) {
@@ -75,6 +84,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    @CachePut(value = "customer", key = "#customerDto.id")
     public void updateCustomer(CustomerDto customerDto) {
         log.info("Updating customer with ID: {}", customerDto.getId());
         if (!customerRepository.existsById(customerDto.getId())) {
@@ -85,6 +95,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    @Cacheable(value = "customerEmail", key = "#email")
     public CustomerDto selectUserByEmail(String email) {
         log.info("Fetching customer by email: {}", email);
         return customerRepository.findByEmail(email)

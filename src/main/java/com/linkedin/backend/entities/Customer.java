@@ -3,6 +3,7 @@ package com.linkedin.backend.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
@@ -12,7 +13,7 @@ import java.util.Objects;
 @Setter
 @Builder
 @Table(name = "customers")
-public class Customer {
+public class Customer implements Serializable {
     @Id
     @GeneratedValue(
             strategy = GenerationType.IDENTITY

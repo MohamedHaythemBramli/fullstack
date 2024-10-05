@@ -22,6 +22,12 @@ services:
       retries: 5
       interval: 3s
       timeout: 30s
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"  # Expose Redis on default port
+    networks:
+      - spring-boot-mysql-network
   myapp:
     build: .
     ports:
@@ -34,5 +40,8 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:mysql://mysqldb:3306/customersdb
       - SPRING_DATASOURCE_USERNAME=myuser
       - SPRING_DATASOURCE_PASSWORD=mypassword
+      - SPRING_CACHE_TYPE=redis  # Set caching type to Redis
+      - SPRING_REDIS_HOST=redis  # Set Redis host to the service name
+      - SPRING_REDIS_PORT=6379  # Set Redis port
     networks:
       - spring-boot-mysql-network
