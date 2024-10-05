@@ -9,6 +9,8 @@ import com.linkedin.backend.repositories.CustomerRepository;
 import com.linkedin.backend.service.CustomerService;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,11 +29,10 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public List<CustomerDto> selectAllCustomers() {
-        log.info("Fetching all customers from the database");
-        return customerRepository.findAll().stream()
-                .map(CustomerMapper.INSTANCE::toCustomerDto)
-                .collect(Collectors.toList());
+    public Page<CustomerDto> selectAllCustomers(Pageable pageable) {
+        log.info("Fetching customers from database with pagination and sorting");
+        return customerRepository.findAll(pageable)
+                .map(CustomerMapper.INSTANCE::toCustomerDto);
     }
 
     @Override

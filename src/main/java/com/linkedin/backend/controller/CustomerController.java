@@ -6,12 +6,15 @@ import com.linkedin.backend.exception.WebResponse;
 import com.linkedin.backend.service.CustomerService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+
 
 @RestController
 @RequestMapping("/api/customers")
@@ -26,10 +29,12 @@ public class CustomerController {
     }
 
     @GetMapping
-    public ResponseEntity<WebResponse<List<CustomerDto>>> getAllCustomers() {
-        log.info("Fetching all customers");
-        List<CustomerDto> customers = customerService.selectAllCustomers();
-        WebResponse<List<CustomerDto>> response = WebResponse.<List<CustomerDto>>builder()
+    public ResponseEntity<WebResponse<Page<CustomerDto>>> getAllCustomers(
+            @PageableDefault(page = 0, size = 10, sort = "name") Pageable pageable) {
+        log.info("Fetching all customers with pagination: page={}, size={}, sort={}",
+                pageable.getPageNumber(), pageable.getPageSize(), pageable.getSort());
+        Page<CustomerDto> customers = customerService.selectAllCustomers(pageable);
+        WebResponse<Page<CustomerDto>> response = WebResponse.<Page<CustomerDto>>builder()
                 .success(true)
                 .data(customers)
                 .message("Customers fetched successfully")
