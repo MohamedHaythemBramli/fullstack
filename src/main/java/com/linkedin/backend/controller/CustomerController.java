@@ -55,7 +55,7 @@ public class CustomerController {
 
     @PostMapping
     public ResponseEntity<WebResponse<Void>> createCustomer(@Valid @RequestBody CustomerDto customerDto) {
-        log.info("Creating a new customer: {}", customerDto);
+        log.info("Creating a new customer with email: {}", customerDto.getEmail());
         customerService.insertCustomer(customerDto);
         WebResponse<Void> response = WebResponse.<Void>builder()
                 .success(true)
@@ -66,7 +66,7 @@ public class CustomerController {
 
     @PutMapping
     public ResponseEntity<WebResponse<Void>> updateCustomer(@Valid @RequestBody CustomerDto customerDto) {
-        log.info("Updating customer: {}", customerDto);
+        log.info("Updating customer with ID: {}", customerDto.getId());
         customerService.updateCustomer(customerDto);
         WebResponse<Void> response = WebResponse.<Void>builder()
                 .success(true)
@@ -83,7 +83,7 @@ public class CustomerController {
                 .success(true)
                 .message("Customer deleted successfully")
                 .build();
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(response);
     }
 
     @GetMapping("/email")
