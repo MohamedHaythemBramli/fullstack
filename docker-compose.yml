@@ -1,5 +1,7 @@
 volumes:
   mysql-data:
+  minio_data:
+    driver: local
 networks:
   spring-boot-mysql-network:
     name: spring-boot-mysql-network
@@ -72,6 +74,20 @@ services:
       - GF_SECURITY_ADMIN_PASSWORD=password
     networks:
       - spring-boot-mysql-network
+  minio:
+    image: quay.io/minio/minio:latest
+    container_name: minio
+    ports:
+      - '9000:9000'
+      - '9001:9001'
+    networks:
+      - spring-boot-mysql-network
+    volumes:
+      - 'minio_data:/data'
+    environment:
+      - MINIO_ROOT_USER=minioadmin
+      - MINIO_ROOT_PASSWORD=minioadmin
+    command: server /data --console-address ":9001"
   myapp:
     build: .
     ports:
@@ -91,5 +107,7 @@ services:
       - SPRING_CACHE_TYPE=redis  # Set caching type to Redis
       - SPRING_REDIS_HOST=redis  # Set Redis host to the service name
       - SPRING_REDIS_PORT=6379  # Set Redis port
+      - MINIO_ROOT_USER=minioadmin
+      - MINIO_ROOT_PASSWORD=minioadmin
     networks:
       - spring-boot-mysql-network
