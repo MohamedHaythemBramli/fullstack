@@ -28,6 +28,50 @@ services:
       - "6379:6379"  # Expose Redis on default port
     networks:
       - spring-boot-mysql-network
+  my-prometheus:
+    image: prom/prometheus
+    container_name: my-prometheus
+    restart: unless-stopped
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./docker/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - spring-boot-mysql-network
+    ## Tempo
+  my-tempo:
+    image: grafana/tempo
+    container_name: my-tempo
+    command: [ "-config.file=/etc/tempo.yaml" ]
+    volumes:
+      - ./docker/tempo/tempo.yml:/etc/tempo.yaml:ro
+      - ./docker/tempo/tempo-data:/tmp/tempo
+    ports:
+      - "3200:3200" # Tempo
+      - "9411:9411" # zipkin
+    networks:
+      - spring-boot-mysql-network
+  my-loki:
+    image: grafana/loki:main
+    container_name: my-loki
+    command: [ "-config.file=/etc/loki/local-config.yaml" ]
+    ports:
+      - "3100:3100"
+    networks:
+      - spring-boot-mysql-network
+  my-grafana:
+    image: grafana/grafana
+    container_name: my-grafana
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./docker/grafana:/etc/grafana/provisioning/datasources:ro
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=password
+    networks:
+      - spring-boot-mysql-network
   myapp:
     build: .
     ports:
@@ -35,6 +79,10 @@ services:
     depends_on:
       mysqldb:
         condition: service_healthy
+      my-tempo:
+        condition: service_started
+      my-loki:
+        condition: service_started
     environment:
       - SPRING_PROFILES_ACTIVE=docker
       - SPRING_DATASOURCE_URL=jdbc:mysql://mysqldb:3306/customersdb
