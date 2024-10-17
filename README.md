@@ -17,7 +17,7 @@ This is a Spring Boot application designed with a set of features to handle data
 
 
 ## Deployment 
-- git clone https://github.com/your-repository.git
--  cd your-repository
+- git clone https://github.com/MohamedHaythemBramli/fullstack.git
+- cd fullstack
 - mvn clean install
 - docker-compose up -d --build
