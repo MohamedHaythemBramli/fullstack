@@ -21,3 +21,9 @@ This is a Spring Boot application designed with a set of features to handle data
 - cd fullstack
 - mvn clean install
 - docker-compose up -d --build
+
+# Next Tasks
+- **Spring Batch**: Process JSON, XML files, and data from REST APIs.
+- **Spring Integration**: Poll directories for new files and trigger processing.
+- **Apache Kafka**: Produce messages to Kafka after processing.
+- **AWS S3**: Upload processed files to an S3 bucket using HttpHeaders.
