@@ -21,7 +21,7 @@ public class BackendApplication {
         SpringApplication.run(BackendApplication.class, args);
     }
 
-    @Bean
+    /*@Bean
     public CommandLineRunner initRoles(RoleRepository roleRepository) {
         return args -> {
             insertRole(roleRepository, 1, "Admin");
@@ -40,6 +40,6 @@ public class BackendApplication {
             role.setName(name);
             roleRepository.save(role);
         }
-    }
+    }*/
 
 }

@@ -1,0 +1,102 @@
+<customers>
+    <customer>
+        <name>John Doe</name>
+        <email>john.doe@example.com</email>
+        <age>29</age>
+    </customer>
+    <customer>
+        <name>Jane Smith</name>
+        <email>jane.smith@example.com</email>
+        <age>34</age>
+    </customer>
+    <customer>
+        <name>Alice Johnson</name>
+        <email>alice.johnson@example.com</email>
+        <age>22</age>
+    </customer>
+    <customer>
+        <name>Bob Williams</name>
+        <email>bob.williams@example.com</email>
+        <age>41</age>
+    </customer>
+    <customer>
+        <name>Charlie Brown</name>
+        <email>charlie.brown@example.com</email>
+        <age>37</age>
+    </customer>
+    <customer>
+        <name>Emily Davis</name>
+        <email>emily.davis@example.com</email>
+        <age>25</age>
+    </customer>
+    <customer>
+        <name>Frank Miller</name>
+        <email>frank.miller@example.com</email>
+        <age>48</age>
+    </customer>
+    <customer>
+        <name>Grace Lee</name>
+        <email>grace.lee@example.com</email>
+        <age>30</age>
+    </customer>
+    <customer>
+        <name>Henry Wilson</name>
+        <email>henry.wilson@example.com</email>
+        <age>45</age>
+    </customer>
+    <customer>
+        <name>Irene Scott</name>
+        <email>irene.scott@example.com</email>
+        <age>28</age>
+    </customer>
+    <customer>
+        <name>Jack White</name>
+        <email>jack.white@example.com</email>
+        <age>32</age>
+    </customer>
+    <customer>
+        <name>Kate Hall</name>
+        <email>kate.hall@example.com</email>
+        <age>23</age>
+    </customer>
+    <customer>
+        <name>Liam Taylor</name>
+        <email>liam.taylor@example.com</email>
+        <age>50</age>
+    </customer>
+    <customer>
+        <name>Mia Harris</name>
+        <email>mia.harris@example.com</email>
+        <age>27</age>
+    </customer>
+    <customer>
+        <name>Nathan Clark</name>
+        <email>nathan.clark@example.com</email>
+        <age>40</age>
+    </customer>
+    <customer>
+        <name>Olivia Martinez</name>
+        <email>olivia.martinez@example.com</email>
+        <age>35</age>
+    </customer>
+    <customer>
+        <name>Paul Lewis</name>
+        <email>paul.lewis@example.com</email>
+        <age>38</age>
+    </customer>
+    <customer>
+        <name>Quinn Turner</name>
+        <email>quinn.turner@example.com</email>
+        <age>31</age>
+    </customer>
+    <customer>
+        <name>Ruby Walker</name>
+        <email>ruby.walker@example.com</email>
+        <age>26</age>
+    </customer>
+    <customer>
+        <name>Samuel King</name>
+        <email>samuel.king@example.com</email>
+        <age>42</age>
+    </customer>
+</customers>
